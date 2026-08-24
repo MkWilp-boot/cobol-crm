@@ -1,5 +1,5 @@
        IDENTIFICATION      DIVISION.
-       PROGRAM-ID.         SETUP.
+       PROGRAM-ID.         INITFILES.
 
        ENVIRONMENT         DIVISION.
        INPUT-OUTPUT        SECTION.
@@ -20,6 +20,10 @@
       * FILE STATUS
        01 FS-OFCRM         PIC 9(02) VALUE ZERO.
 
+       01 WS-HOLD-SCREEN   PIC X     VALUE SPACE.
+       SCREEN              SECTION.
+       01 SC.
+         05 BLANK SCREEN.
        PROCEDURE           DIVISION.
        0100-MAIN           SECTION.
            PERFORM 0200-INIT.
@@ -27,21 +31,21 @@
            GOBACK.
        0100-END.           EXIT.
        0200-INIT           SECTION.
+           DISPLAY SC.
+
            OPEN INPUT OFCRM.
            EVALUATE FS-OFCRM
              WHEN ZEROS
-               DISPLAY "FILE ALREADY EXISTS" 
+               DISPLAY "FILE ALREADY EXISTS" LINE 01 COLUMN 01
              WHEN 35
                OPEN OUTPUT OFCRM
-               DISPLAY FS-OFCRM
-               DISPLAY "FILE CREATED"        
+               DISPLAY "FILE CREATED"        LINE 01 COLUMN 01
              WHEN OTHER
-               DISPLAY "ERROR"               
-               DISPLAY FS-OFCRM              
-               GOBACK
+               DISPLAY "ERROR"               LINE 01 COLUMN 01
+               DISPLAY FS-OFCRM              LINE 02 COLUMN 01
            END-EVALUATE.
        0200-END.           EXIT.
        0300-FINALIZER      SECTION.
+           ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01.
            CLOSE OFCRM.
        0300-END.           EXIT.
-           STOP RUN.

@@ -1,6 +1,6 @@
        IDENTIFICATION      DIVISION.
        PROGRAM-ID.         CRM.
-
+       AUTHOR.             "JOAO FERNANDES".
        ENVIRONMENT         DIVISION.
 
        DATA                DIVISION.
@@ -35,6 +35,8 @@
            DISPLAY "9-ENCERRAR"        LINE 14 COLUMN 01.
            DISPLAY "  QUAL OPCAO:"     LINE 20 COLUMN 01.
              ACCEPT WS-OPTION          LINE 20 COLUMN 20.
+             
+           DISPLAY SC.
            
            EVALUATE WS-OPTION
              WHEN 1

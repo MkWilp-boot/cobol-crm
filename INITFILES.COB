@@ -28,16 +28,16 @@
        0100-END.           EXIT.
        0200-INIT           SECTION.
            OPEN INPUT OFCRM.
-           DISPLAY FS-OFCRM.
            EVALUATE FS-OFCRM
              WHEN ZEROS
-               DISPLAY "FILE ALREADY EXISTS" LINE 01 COLUMN 01
+               DISPLAY "FILE ALREADY EXISTS" 
              WHEN 35
                OPEN OUTPUT OFCRM
-               DISPLAY "FILE CREATED"        LINE 01 COLUMN 01
+               DISPLAY FS-OFCRM
+               DISPLAY "FILE CREATED"        
              WHEN OTHER
-               DISPLAY "ERROR"               LINE 01 COLUMN 01
-               DISPLAY FS-OFCRM              LINE 02 COLUMN 01
+               DISPLAY "ERROR"               
+               DISPLAY FS-OFCRM              
                GOBACK
            END-EVALUATE.
        0200-END.           EXIT.

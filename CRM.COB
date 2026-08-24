@@ -49,7 +49,7 @@
                WHEN 7
                  CALL "REPINACT"
                WHEN 8
-                 CALL "SETUP"
+                 CALL "INITFILES"
              END-EVALUATE
            END-PERFORM.
            STOP RUN.

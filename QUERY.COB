@@ -28,7 +28,11 @@
        SCREEN              SECTION.
        01 SC.
          05 BLANK SCREEN.
-       
+         05 LINE 01 COLUMN 01 VALUE " _____  __  __  ____  ____  _  _ ".
+         05 LINE 02 COLUMN 01 VALUE "(  _  )(  )(  )( ___)(  _ \( \/ )".
+         05 LINE 03 COLUMN 01 VALUE " )(_)(  )(__)(  )__)  )   / \  / ".
+         05 LINE 04 COLUMN 01 VALUE "(___/\\(______)(____)(_)\_) (__) ".
+
        PROCEDURE           DIVISION.
        0100-MAIN           SECTION.
            PERFORM 0200-INIT.
@@ -37,7 +41,7 @@
            GOBACK.
        0100-END.           EXIT.
        0200-INIT           SECTION.
-           PERFORM 0210-DISPLAY-TITLE.
+           DISPLAY SC.
 
            OPEN INPUT FICRM.
            IF FS-FICRM NOT EQUAL ZEROS
@@ -48,21 +52,9 @@
              GOBACK
            END-IF.
        0200-END.           EXIT.
-       0210-DISPLAY-TITLE  SECTION.
-           DISPLAY SC.
-
-           DISPLAY " _____  __  __  ____  ____  _  _ " 
-             LINE 01 COLUMN 01.
-           DISPLAY "(  _  )(  )(  )( ___)(  _ \( \/ )" 
-             LINE 02 COLUMN 01.
-           DISPLAY " )(_)(  )(__)(  )__)  )   / \  / "
-             LINE 03 COLUMN 01.
-           DISPLAY "(___/\\(______)(____)(_)\_) (__) " 
-             LINE 04 COLUMN 01.
-       0210-END.           EXIT.
        0300-PROCCESS       SECTION.
            MOVE SPACE TO WS-FOLLOW-OPT.
-           PERFORM 0210-DISPLAY-TITLE.
+           DISPLAY SC.
 
            DISPLAY "ENTER CLIENT ID:" LINE 06 COLUMN 01.
              ACCEPT OFCRM-ID          LINE 06 COLUMN 18.
@@ -82,15 +74,14 @@
                  DISPLAY OFCRM-STATUS  LINE 12 COLUMN 08
              WHEN 23
                DISPLAY "REGISTER NOT FOUND." LINE 10 COLUMN 01
-               ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01
              WHEN OTHER
                DISPLAY "ERROR READING FILE:"  LINE 10 COLUMN 01
                DISPLAY FS-FICRM               LINE 10 COLUMN 23
-               ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01
+               ACCEPT WS-HOLD-SCREEN          LINE 20 COLUMN 01
            END-EVALUATE.
            PERFORM UNTIL OPT-SEARCH-MORE OR OPT-EXIT-SEARCH
              DISPLAY "SEARCH ANOTHER? (Y/N)" LINE 15 COLUMN 01
-               ACCEPT WS-FOLLOW-OPT          LINE 15 COLUMN 22
+               ACCEPT WS-FOLLOW-OPT          LINE 15 COLUMN 24
            END-PERFORM.
        0300-END.           EXIT.
        0400-FINALIZER      SECTION.

@@ -19,8 +19,8 @@
 
        WORKING-STORAGE     SECTION.
        COPY "#CRM-WS.CPY".
-       01 FS-FCRM         PIC X(02) VALUE ZERO.
-       01 WS-HOLD-SCREEN   PIC X VALUE SPACE.
+       01 FS-FCRM          PIC X(02) VALUE ZERO.
+       01 WS-HOLD-SCREEN   PIC X     VALUE SPACE.
 
        PROCEDURE           DIVISION.
        0100-MAIN           SECTION.

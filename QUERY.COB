@@ -18,26 +18,26 @@
        COPY "#CRM.CPY".
 
        WORKING-STORAGE     SECTION.
-       01 FS-FICRM         PIC 9(02) VALUE ZEROS.
-       01 WS-HOLD-SCREEN   PIC X     VALUE SPACE.
+       01 FS-FICRM          PIC 9(02) VALUE ZEROS.
+       01 WS-FOLLOW-OPT     PIC X(01).
+         88 OPT-SEARCH-MORE VALUE 'Y'.
+         88 OPT-EXIT-SEARCH VALUE 'N'.
+       
+       01 WS-HOLD-SCREEN    PIC X(01) VALUE SPACE.
 
+       SCREEN              SECTION.
+       01 SC.
+         05 BLANK SCREEN.
+       
        PROCEDURE           DIVISION.
        0100-MAIN           SECTION.
            PERFORM 0200-INIT.
-           PERFORM 0300-PROCCESS.
+           PERFORM 0300-PROCCESS UNTIL OPT-EXIT-SEARCH.
            PERFORM 0400-FINALIZER.
-           ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01.
            GOBACK.
        0100-END.           EXIT.
        0200-INIT           SECTION.
-           DISPLAY " _____  __  __  ____  ____  _  _ " 
-             LINE 01 COLUMN 01.
-           DISPLAY "(  _  )(  )(  )( ___)(  _ \( \/ )" 
-             LINE 02 COLUMN 01.
-           DISPLAY " )(_)(  )(__)(  )__)  )   / \  / "
-             LINE 03 COLUMN 01.
-           DISPLAY "(___/\\(______)(____)(_)\_) (__) " 
-             LINE 04 COLUMN 01.
+           PERFORM 0210-DISPLAY-TITLE.
 
            OPEN INPUT FICRM.
            IF FS-FICRM NOT EQUAL ZEROS
@@ -48,8 +48,22 @@
              GOBACK
            END-IF.
        0200-END.           EXIT.
+       0210-DISPLAY-TITLE  SECTION.
+           DISPLAY SC.
+
+           DISPLAY " _____  __  __  ____  ____  _  _ " 
+             LINE 01 COLUMN 01.
+           DISPLAY "(  _  )(  )(  )( ___)(  _ \( \/ )" 
+             LINE 02 COLUMN 01.
+           DISPLAY " )(_)(  )(__)(  )__)  )   / \  / "
+             LINE 03 COLUMN 01.
+           DISPLAY "(___/\\(______)(____)(_)\_) (__) " 
+             LINE 04 COLUMN 01.
+       0210-END.           EXIT.
        0300-PROCCESS       SECTION.
-           
+           MOVE SPACE TO WS-FOLLOW-OPT.
+           PERFORM 0210-DISPLAY-TITLE.
+
            DISPLAY "ENTER CLIENT ID:" LINE 06 COLUMN 01.
              ACCEPT OFCRM-ID          LINE 06 COLUMN 18.
 
@@ -68,10 +82,16 @@
                  DISPLAY OFCRM-STATUS  LINE 12 COLUMN 08
              WHEN 23
                DISPLAY "REGISTER NOT FOUND." LINE 10 COLUMN 01
+               ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01
              WHEN OTHER
                DISPLAY "ERROR READING FILE:"  LINE 10 COLUMN 01
                DISPLAY FS-FICRM               LINE 10 COLUMN 23
+               ACCEPT WS-HOLD-SCREEN LINE 20 COLUMN 01
            END-EVALUATE.
+           PERFORM UNTIL OPT-SEARCH-MORE OR OPT-EXIT-SEARCH
+             DISPLAY "SEARCH ANOTHER? (Y/N)" LINE 15 COLUMN 01
+               ACCEPT WS-FOLLOW-OPT          LINE 15 COLUMN 22
+           END-PERFORM.
        0300-END.           EXIT.
        0400-FINALIZER      SECTION.
            CLOSE FICRM.

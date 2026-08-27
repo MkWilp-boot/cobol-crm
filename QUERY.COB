@@ -42,6 +42,7 @@
        0100-END.           EXIT.
        0200-INIT           SECTION.
            DISPLAY SC.
+           MOVE SPACE TO WS-FOLLOW-OPT.
 
            OPEN INPUT FICRM.
            IF FS-FICRM NOT EQUAL ZEROS
